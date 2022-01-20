@@ -5,8 +5,8 @@ import com.thussey.photobomb.data.model.photosession.PhotoSession
 
 interface PhotoRepository {
 
-    fun getPhotoSessions() : List<PhotoSession>
-    fun getPhoto() : List<Photo>
+    fun getPhotoSessions() : MutableList<PhotoSession>
+    fun getPhoto() : MutableList<Photo>
 
     fun getPhotoSessionById(photoSessionId : String) : PhotoSession
     fun getPhotoById(photoId : String) : Photo
