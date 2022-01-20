@@ -1,6 +1,8 @@
-package com.thussey.photobomb.data
+package com.thussey.photobomb.data.repository.login
 
-import com.thussey.photobomb.data.model.LoggedInUser
+import com.thussey.photobomb.data.datasource.LoginDataSource
+import com.thussey.photobomb.data.Result
+import com.thussey.photobomb.data.model.login.LoggedInUser
 import javax.inject.Inject
 
 /**

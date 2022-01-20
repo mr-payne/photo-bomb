@@ -2,8 +2,8 @@ package com.thussey.photobomb.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.thussey.photobomb.data.LoginDataSource
-import com.thussey.photobomb.data.LoginRepository
+import com.thussey.photobomb.data.datasource.LoginDataSource
+import com.thussey.photobomb.data.repository.login.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
