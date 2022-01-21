@@ -2,6 +2,8 @@ package com.thussey.photobomb.di
 
 import com.thussey.photobomb.data.repository.photo.PhotoRepository
 import com.thussey.photobomb.data.repository.photo.PhotoRepositoryImpl
+import com.thussey.photobomb.data.repository.user.UserRepository
+import com.thussey.photobomb.data.repository.user.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +16,11 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindPhotoRepositoryImpl(
-        analyticsServiceImpl: PhotoRepositoryImpl
+        photoRepositoryImpl: PhotoRepositoryImpl
     ): PhotoRepository
+
+    @Binds
+    abstract fun bindUserRepositoryImpl(
+        userRepositoryImpl : UserRepositoryImpl
+    ) : UserRepository
 }

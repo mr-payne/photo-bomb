@@ -1,7 +1,7 @@
 package com.thussey.photobomb.data.datasource
 
 import com.thussey.photobomb.data.Result
-import com.thussey.photobomb.data.model.login.LoggedInUser
+import com.thussey.photobomb.data.model.user.User
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -11,10 +11,10 @@ import javax.inject.Inject
  */
 class LoginDataSource @Inject constructor() {
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String): Result<User> {
         try {
             // TODO: handle loggedInUser authentication
-            val fakeUser = LoggedInUser(UUID.randomUUID().toString(), "Jane Doe")
+            val fakeUser = User(UUID.randomUUID().toString(), "JaneDoe@gmail.com")
             return Result.Success(fakeUser)
         } catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))

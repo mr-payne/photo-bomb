@@ -1,12 +1,14 @@
 package com.thussey.photobomb.data.repository.photo
 
+import com.thussey.photobomb.data.retrofit.PhotoBombService
+import com.thussey.photobomb.data.datasource.PhotoApiServices
 import com.thussey.photobomb.data.model.photo.Photo
 import com.thussey.photobomb.data.model.photosession.PhotoSession
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-class PhotoRepositoryImpl  @Inject constructor() : PhotoRepository {
+class PhotoRepositoryImpl  @Inject constructor(
+    val photoApiServices : PhotoBombService<PhotoApiServices>) : PhotoRepository {
     override fun getPhotoSessions(): MutableList<PhotoSession> {
         val threeMockSessions = mutableListOf<PhotoSession>()
         threeMockSessions.add(PhotoSession("1", "title 1", Date(), "thumbnail"))
@@ -15,7 +17,7 @@ class PhotoRepositoryImpl  @Inject constructor() : PhotoRepository {
         return threeMockSessions
     }
 
-    override fun getPhoto(): MutableList<Photo> {
+    override fun getPhotos(): MutableList<Photo> {
         TODO("Not yet implemented")
     }
 

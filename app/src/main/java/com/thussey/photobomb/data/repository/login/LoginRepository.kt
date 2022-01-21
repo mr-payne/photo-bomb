@@ -2,7 +2,7 @@ package com.thussey.photobomb.data.repository.login
 
 import com.thussey.photobomb.data.datasource.LoginDataSource
 import com.thussey.photobomb.data.Result
-import com.thussey.photobomb.data.model.login.LoggedInUser
+import com.thussey.photobomb.data.model.user.User
 import javax.inject.Inject
 
 /**
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor(val dataSource: LoginDataSource) {
 
     // in-memory cache of the loggedInUser object
-    var user: LoggedInUser? = null
+    var user: User? = null
         private set
 
     val isLoggedIn: Boolean
@@ -30,7 +30,7 @@ class LoginRepository @Inject constructor(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String): Result<User> {
         // handle login
         val result = dataSource.login(username, password)
 
@@ -41,8 +41,8 @@ class LoginRepository @Inject constructor(val dataSource: LoginDataSource) {
         return result
     }
 
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
+    private fun setLoggedInUser(user: User) {
+        this.user = user
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }
