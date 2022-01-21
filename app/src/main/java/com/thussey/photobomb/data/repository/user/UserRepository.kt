@@ -5,6 +5,6 @@ import com.thussey.photobomb.data.model.user.User
 
 interface UserRepository {
 
-    fun getUserById() : Result<User>
+    suspend fun getUserById() : Result<User>
     suspend fun getUsers() : Result<List<User>>
 }

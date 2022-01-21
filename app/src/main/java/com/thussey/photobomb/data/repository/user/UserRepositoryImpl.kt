@@ -13,7 +13,7 @@ class UserRepositoryImpl @Inject constructor(
     val photoApiServices : PhotoBombService<PhotoApiServices>) : UserRepository {
     val tag = UserRepositoryImpl::class.java.simpleName
 
-    override fun getUserById(): Result<User> {
+    override suspend fun getUserById(): Result<User> {
         TODO("Not yet implemented")
     }
 
