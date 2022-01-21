@@ -1,31 +1,27 @@
 package com.thussey.photobomb.data.repository.photo
 
-import com.thussey.photobomb.data.retrofit.PhotoBombService
 import com.thussey.photobomb.data.datasource.PhotoApiServices
 import com.thussey.photobomb.data.model.photo.Photo
 import com.thussey.photobomb.data.model.photosession.PhotoSession
-import java.util.*
+import com.thussey.photobomb.data.retrofit.PhotoBombService
 import javax.inject.Inject
 
 class PhotoRepositoryImpl  @Inject constructor(
     val photoApiServices : PhotoBombService<PhotoApiServices>) : PhotoRepository {
-    override fun getPhotoSessions(): MutableList<PhotoSession> {
-        val threeMockSessions = mutableListOf<PhotoSession>()
-        threeMockSessions.add(PhotoSession("1", "title 1", Date(), "thumbnail"))
-        threeMockSessions.add(PhotoSession("2", "title 2", Date(), "thumbnaila"))
-        threeMockSessions.add(PhotoSession("3", "title 3", Date(), "thumbnailb"))
-        return threeMockSessions
+    override fun getPhotoSessions(): Result<List<PhotoSession>> {
+        TODO("Not yet implemented")
+
     }
 
-    override fun getPhotos(): MutableList<Photo> {
+    override fun getPhotos(): Result<List<Photo>> {
         TODO("Not yet implemented")
     }
 
-    override fun getPhotoSessionById(photoSessionId: String): PhotoSession {
+    override fun getPhotoSessionById(photoSessionId: String): Result<PhotoSession> {
         TODO("Not yet implemented")
     }
 
-    override fun getPhotoById(photoId: String): Photo {
+    override fun getPhotoById(photoId: String): Result<Photo> {
         TODO("Not yet implemented")
     }
 
