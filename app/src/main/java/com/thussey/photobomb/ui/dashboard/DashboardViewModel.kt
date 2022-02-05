@@ -15,5 +15,5 @@ class DashboardViewModel @Inject constructor(
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"
     }
-    val text: LiveData<String> = savedStateHandle.getLiveData("text", "default text")
+    val text: LiveData<String> = savedStateHandle.getLiveData("text", "Not Implemented Yet")
 }
