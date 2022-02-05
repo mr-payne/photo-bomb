@@ -1,7 +1,7 @@
 package com.thussey.photobomb.di;
 
-import com.thussey.photobomb.data.retrofit.PhotoBombService;
 import com.thussey.photobomb.data.datasource.PhotoApiServices;
+import com.thussey.photobomb.data.retrofit.PhotoBombService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,5 +51,4 @@ public class RetrofitModule {
             OkHttpClient okHttpClient, @Named("PhotoApiBaseUrl") String url) {
         return new PhotoBombService<>(okHttpClient, PhotoApiServices.class, url);
     }
-
 }

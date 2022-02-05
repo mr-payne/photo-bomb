@@ -15,5 +15,5 @@ class NotificationsViewModel @Inject constructor(
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"
     }
-    val text: LiveData<String> = savedStateHandle.getLiveData("text", "Default Text")
+    val text: LiveData<String> = savedStateHandle.getLiveData("text", "Not Implemented Yet")
 }
