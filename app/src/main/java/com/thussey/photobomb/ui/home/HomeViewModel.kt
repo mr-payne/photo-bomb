@@ -11,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,10 +25,9 @@ class HomeViewModel @Inject constructor(
 
     private val _homeState = MutableStateFlow(HomeState())
     val homeState = _homeState.asStateFlow()
-    val photoSessionItems : List<PhotoSessionItem> = mutableListOf()
+    private val simpleDateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
     init {
-        //_homeState.value = _homeState.value.copy(_)
     }
 
     /*fun getUsers() {
@@ -44,34 +45,27 @@ class HomeViewModel @Inject constructor(
             val result = photoRepository.getPhotoSessions("66496f55-ecc7-47e2-92fa-8b76d7c22503")
             if (result is Result.Success) {
                 _homeState.value = _homeState.value.copy(photoSessions = result.data)
-                getPhotoSessionThumbnails()
+                buildPhotoSessionAdapterItems()
             }
         }
     }
 
-    fun getPhotoSessionThumbnails() {
-        photoSessionItems as MutableList
+    fun buildPhotoSessionAdapterItems() {
+        val photoSessionItems = mutableListOf<PhotoSessionItem>()
         viewModelScope.launch {
-           /* val result = photoRepository.getPhotoById(homeState.value.photoSessions[0].thumbnailPhotoId)
-            if (result is Result.Success) {
-                val data = result.data
-                photoSessionItems.add(PhotoSessionItem(data.url, homeState.value.photoSessions[0].title, homeState.value.photoSessions[0].date.toString()))
-            } else {
-                val data = result
-            }*/
-
             _homeState.value.photoSessions.forEach { photoSession ->
                 val photoResult = photoRepository.getPhotoById(photoSession.thumbnailPhotoId)
                 if (photoResult is Result.Success) {
                     val data = photoResult.data
-                    photoSessionItems.add(PhotoSessionItem(data.url, photoSession.title, photoSession.date.toString()))
+                    photoSessionItems.add(PhotoSessionItem(data.url,
+                        photoSession.title,
+                        simpleDateFormat.format(photoSession.date)))
                 } else {
                     val error = photoResult
                 }
             }
-
-            _homeState.value = _homeState.value.copy(uiState = UiState.LOADED)
+            _homeState.value = _homeState.value.copy(uiState = UiState.LOADED,
+                photoSessionAdapterItems = photoSessionItems)
         }
     }
-
 }

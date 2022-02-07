@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
                 homeViewModel.homeState.collect { homeState ->
                     if (homeState.uiState == UiState.LOADED) {
                         binding.photoSessions.layoutManager = LinearLayoutManager(requireContext())
-                        binding.photoSessions.adapter = PhotoSessionRVAdapter(homeViewModel.photoSessionItems)
+                        binding.photoSessions.adapter = PhotoSessionRVAdapter(homeState.photoSessionAdapterItems)
                     }
                 }
             }
