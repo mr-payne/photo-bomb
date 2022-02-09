@@ -57,7 +57,8 @@ class HomeViewModel @Inject constructor(
                 val photoResult = photoRepository.getPhotoById(photoSession.thumbnailPhotoId)
                 if (photoResult is Result.Success) {
                     val data = photoResult.data
-                    photoSessionItems.add(PhotoSessionItem(data.url,
+                    photoSessionItems.add(PhotoSessionItem(photoSession.photoSessionId,
+                        data.url,
                         photoSession.title,
                         simpleDateFormat.format(photoSession.date)))
                 } else {

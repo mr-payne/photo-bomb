@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.thussey.photobomb.R
@@ -28,6 +29,10 @@ class PhotoSessionRVAdapter(private val photoSessions : List<PhotoSessionItem>)
         val photoSession = photoSessions[position]
         holder.photoSessionTitle.text = photoSession.title
         holder.photoSessionDate.text = photoSession.date
+        holder.sessionThumbnail.setOnClickListener {
+            val action = HomeFragmentDirections.actionNavigationHomeToPhotoSessionFragment(photoSession.photoSessionId)
+            holder.itemView.findNavController().navigate(action)
+        }
         Picasso.get()
             .load(photoSession.thumbnailUrl)
             .placeholder(R.drawable.ic_placeholder_photo_24)
