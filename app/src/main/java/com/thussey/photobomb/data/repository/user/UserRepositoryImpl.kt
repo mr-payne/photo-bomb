@@ -8,13 +8,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import java.io.IOException
+import java.util.*
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val photoApiServices : PhotoBombService<PhotoApiServices>) : UserRepository {
     private val tag = UserRepositoryImpl::class.java.simpleName
 
-    override suspend fun getUserById(userId : String): Result<User> {
+    override suspend fun getUserById(userId : UUID): Result<User> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = photoApiServices.retrofitInstance.getUserById(userId)

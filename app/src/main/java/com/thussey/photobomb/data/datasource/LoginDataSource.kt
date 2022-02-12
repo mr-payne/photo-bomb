@@ -14,7 +14,7 @@ class LoginDataSource @Inject constructor() {
     fun login(username: String, password: String): Result<User> {
         try {
             // TODO: handle loggedInUser authentication
-            val fakeUser = User(UUID.randomUUID().toString(), "JaneDoe@gmail.com")
+            val fakeUser = User(UUID.randomUUID(), "JaneDoe@gmail.com")
             return Result.Success(fakeUser)
         } catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))

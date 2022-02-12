@@ -30,7 +30,7 @@ class PhotoSessionRVAdapter(private val photoSessions : List<PhotoSessionItem>)
         holder.photoSessionTitle.text = photoSession.title
         holder.photoSessionDate.text = photoSession.date
         holder.sessionThumbnail.setOnClickListener {
-            val action = HomeFragmentDirections.actionNavigationHomeToPhotoSessionFragment(photoSession.photoSessionId)
+            val action = HomeFragmentDirections.actionNavigationHomeToPhotoSessionFragment(photoSession.photoSessionId.toString())
             holder.itemView.findNavController().navigate(action)
         }
         Picasso.get()

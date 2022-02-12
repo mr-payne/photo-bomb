@@ -10,6 +10,7 @@ import com.thussey.photobomb.data.repository.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,28 +43,33 @@ class HomeViewModel @Inject constructor(
 
     fun getPhotoSessions() {
         viewModelScope.launch {
-            val result = photoRepository.getPhotoSessions("66496f55-ecc7-47e2-92fa-8b76d7c22503")
-            if (result is Result.Success) {
-                _homeState.value = _homeState.value.copy(photoSessions = result.data)
-                buildPhotoSessionAdapterItems()
-            }
+            photoRepository.getPhotoSessions(UUID.fromString("66496f55-ecc7-47e2-92fa-8b76d7c22503"))
+                .collectLatest { result ->
+                    if (result is Result.Success) {
+                        _homeState.value = _homeState.value.copy(photoSessions = result.data)
+                        buildPhotoSessionAdapterItems()
+                    }
+                }
         }
     }
 
-    fun buildPhotoSessionAdapterItems() {
-        val photoSessionItems = mutableListOf<PhotoSessionItem>()
+    private fun buildPhotoSessionAdapterItems() {
         viewModelScope.launch {
-            _homeState.value.photoSessions.forEach { photoSession ->
-                val photoResult = photoRepository.getPhotoById(photoSession.thumbnailPhotoId)
-                if (photoResult is Result.Success) {
-                    val data = photoResult.data
-                    photoSessionItems.add(PhotoSessionItem(photoSession.photoSessionId,
-                        data.url,
-                        photoSession.title,
-                        simpleDateFormat.format(photoSession.date)))
-                } else {
-                    val error = photoResult
-                }
+            val photoSessionItems = mutableListOf<PhotoSessionItem>()
+            homeState.value.photoSessions.forEach { photoSession ->
+                photoRepository.getPhotoById(photoSession.thumbnailPhotoId)
+                    .collectLatest { photoResult ->
+                        if (photoResult is Result.Success) {
+                            val photo = photoResult.data
+                            val item = PhotoSessionItem(photoSession.id,
+                                photo.url,
+                                photoSession.title,
+                                simpleDateFormat.format(photoSession.date))
+                            photoSessionItems.add(item)
+                        } else {
+                            //todo: handle error response
+                        }
+                    }
             }
             _homeState.value = _homeState.value.copy(uiState = UiState.LOADED,
                 photoSessionAdapterItems = photoSessionItems)

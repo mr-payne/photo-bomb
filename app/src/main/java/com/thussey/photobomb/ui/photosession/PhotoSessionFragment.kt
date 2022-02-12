@@ -5,37 +5,62 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.thussey.photobomb.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.thussey.photobomb.data.model.util.UiState
+import com.thussey.photobomb.databinding.FragmentPhotoSessionBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val PHOTO_SESSION_ID = "photoSessionId"
 
 /**
- * A simple [Fragment] subclass.
  * Use the [PhotoSessionFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class PhotoSessionFragment : Fragment() {
+
+    private val photoSessionViewModel: PhotoSessionViewModel by viewModels()
+    private var _binding: FragmentPhotoSessionBinding? = null
+
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var photoSessionId: UUID
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            photoSessionId = UUID.fromString(it.getString(PHOTO_SESSION_ID))
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo_session, container, false)
+    ): View {
+        _binding = FragmentPhotoSessionBinding.inflate(inflater, container, false)
+        val root : View = binding.root
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            photoSessionViewModel.photoSessionState.collectLatest { photoSessionState ->
+                if (photoSessionState.uiState == UiState.LOADED) {
+                    binding.photos.adapter = PhotoRVAdapter(photoSessionState.photos)
+                }
+            }
+        }
+
+        photoSessionViewModel.getPhotoSessionPhotos(photoSessionId)
+
+        return root
     }
 
     companion object {
@@ -49,11 +74,10 @@ class PhotoSessionFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             PhotoSessionFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(PHOTO_SESSION_ID, param1)
                 }
             }
     }

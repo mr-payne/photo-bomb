@@ -1,6 +1,9 @@
 package com.thussey.photobomb.ui.home
 
-data class PhotoSessionItem(val photoSessionId : String = "",
-                            val thumbnailUrl : String,
-                            val title : String,
-                            val date : String)
+import java.io.Serializable
+import java.util.*
+
+data class PhotoSessionItem(val photoSessionId : UUID = UUID.randomUUID(),
+                            val thumbnailUrl : String = "",
+                            val title : String = "",
+                            val date : String = "") : Serializable

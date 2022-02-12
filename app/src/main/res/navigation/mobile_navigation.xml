@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/photoSessionFragment"
         android:name="com.thussey.photobomb.ui.photosession.PhotoSessionFragment"
-        android:label="fragment_photo_session"
+        android:label="@string/title_photo_sessions"
         tools:layout="@layout/fragment_photo_session" >
         <argument
             android:name="photoSessionId"

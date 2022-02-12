@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.thussey.photobomb.data.model.util.UiState
 import com.thussey.photobomb.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,13 +32,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.homeState.collect { homeState ->
-                    if (homeState.uiState == UiState.LOADED) {
-                        binding.photoSessions.layoutManager = LinearLayoutManager(requireContext())
-                        binding.photoSessions.adapter = PhotoSessionRVAdapter(homeState.photoSessionAdapterItems)
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.homeState.collectLatest { homeState ->
+                if (homeState.uiState == UiState.LOADED) {
+                    binding.photoSessions.adapter = PhotoSessionRVAdapter(homeState.photoSessionAdapterItems)
                 }
             }
         }
