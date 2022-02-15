@@ -48,6 +48,8 @@ class HomeViewModel @Inject constructor(
                     if (result is Result.Success) {
                         _homeState.value = _homeState.value.copy(photoSessions = result.data)
                         buildPhotoSessionAdapterItems()
+                    } else {
+                        //todo: handle error case
                     }
                 }
         }

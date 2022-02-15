@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.thussey.photobomb.data.model.util.UiState
+import com.thussey.photobomb.data.repository.photo.PhotoRepository
 import com.thussey.photobomb.databinding.FragmentPhotoSessionBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +37,9 @@ class PhotoSessionFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var photoRepository : PhotoRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -50,10 +55,11 @@ class PhotoSessionFragment : Fragment() {
         _binding = FragmentPhotoSessionBinding.inflate(inflater, container, false)
         val root : View = binding.root
 
+
         viewLifecycleOwner.lifecycleScope.launch {
             photoSessionViewModel.photoSessionState.collectLatest { photoSessionState ->
                 if (photoSessionState.uiState == UiState.LOADED) {
-                    binding.photos.adapter = PhotoRVAdapter(photoSessionState.photos)
+                    binding.photos.adapter = PhotoRVAdapter(photoSessionState.photos, photoSessionViewModel)
                 }
             }
         }

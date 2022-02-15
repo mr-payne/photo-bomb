@@ -1,9 +1,11 @@
 package com.thussey.photobomb.ui.photosession
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thussey.photobomb.data.Result
+import com.thussey.photobomb.data.model.photo.Photo
 import com.thussey.photobomb.data.model.util.UiState
 import com.thussey.photobomb.data.repository.photo.PhotoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +36,18 @@ class PhotoSessionViewModel @Inject constructor(
                 if (photoResult is Result.Success) {
                     _photoSessionState.value =
                         _photoSessionState.value.copy(photos = photoResult.data, uiState = UiState.LOADED)
+                } else {
+                    //todo: handle error
+                }
+            }
+        }
+    }
+
+    fun updatePhoto(photo : Photo) {
+        viewModelScope.launch {
+            photoRepository.updatePhoto(photo).collectLatest { photoResult ->
+                if (photoResult is Result.Success) {
+                    Log.d(tag, "$tag : photoupdate success")
                 } else {
                     //todo: handle error
                 }

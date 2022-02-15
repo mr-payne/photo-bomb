@@ -50,6 +50,13 @@ interface PhotoApiServices {
         @Query("favorite") favorite : Boolean
         ) : Response<List<Photo>>
 
+    @Headers("Accept: application/json")
+    @PUT("/photos/{id}")
+    suspend fun updatePhoto(
+        @Path("id") photoId : UUID,
+        @Body photo : Photo,
+    ) : Response<ResponseBody>
+
 
     @Headers("Accept: application/json")
     @GET("/photos/{id}") //Tested

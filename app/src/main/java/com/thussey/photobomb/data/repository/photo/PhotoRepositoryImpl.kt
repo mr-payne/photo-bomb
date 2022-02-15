@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -51,6 +52,28 @@ class PhotoRepositoryImpl @Inject constructor(
                             emit(Result.Success(data))
                         } else {
                             throw IOException("$tag, data is null in getPhotos")
+                        }
+                    } else {
+                        throw IOException(response.errorBody().toString())
+                    }
+                } catch (e : Exception) {
+                    emit(Result.Error(e))
+                }
+            }
+        }
+    }
+
+    override suspend fun updatePhoto(photo : Photo) : Flow<Result<ResponseBody>>{
+        return withContext(Dispatchers.IO) {
+            flow {
+                try {
+                    val response = photoApiServices.retrofitInstance.updatePhoto(photo.id, photo)
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (data != null) {
+                            emit(Result.Success(data))
+                        } else {
+                            throw IOException("$tag : Data is null in updatePhoto")
                         }
                     } else {
                         throw IOException(response.errorBody().toString())
