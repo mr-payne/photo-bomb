@@ -44,11 +44,9 @@ interface PhotoApiServices {
     ) : Response<ResponseBody>
 
     @Headers("Accept: application/json")
-    @GET("/photos")
+    @GET("/users/{id}/photos")
     suspend fun getUserPhotos(
-        @Query("userId") userId : UUID,
-        @Query("favorite") favorite : Boolean
-        ) : Response<List<Photo>>
+        @Path("id") userId : UUID) : Response<List<Photo>>
 
     @Headers("Accept: application/json")
     @PUT("/photos/{id}")

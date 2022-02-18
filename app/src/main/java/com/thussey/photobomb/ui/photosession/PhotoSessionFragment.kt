@@ -55,11 +55,10 @@ class PhotoSessionFragment : Fragment() {
         _binding = FragmentPhotoSessionBinding.inflate(inflater, container, false)
         val root : View = binding.root
 
-
         viewLifecycleOwner.lifecycleScope.launch {
             photoSessionViewModel.photoSessionState.collectLatest { photoSessionState ->
                 if (photoSessionState.uiState == UiState.LOADED) {
-                    binding.photos.adapter = PhotoRVAdapter(photoSessionState.photos, photoSessionViewModel)
+                    binding.photos.adapter = PhotoRVAdapter(photoSessionState.photos, photoSessionViewModel::updatePhoto)
                 }
             }
         }

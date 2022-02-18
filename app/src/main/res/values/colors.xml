@@ -8,4 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gold">#FFD700</color>
+    <color name="light_grey">#D3D3D3</color>
+    <color name="grey">#808080</color>
+    <color name="chs_green">#232b2b</color>
+    <color name="egret">#f1ebe4</color>
+    <color name="sage">#AAAE7F</color>
+    <color name="pale_spring_bud">#D0D6B3</color>
+    <color name="cultured">#EFEFEF</color>
+    <color name="honeydew">#DFF8EB</color>
 </resources>

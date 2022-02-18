@@ -5,7 +5,9 @@ import java.util.*
 
 data class Photo(val id : UUID = UUID.randomUUID(),
                  val photoSessionId  : UUID = UUID.randomUUID(),
+                 val userId : UUID = UUID.randomUUID(),
                  val name : String = "",
                  val url : String = "",
                  val isThumbnail : Boolean = false,
-                 val isFavorite : Boolean = false) : Serializable
+                 val isFavorite : Boolean = false,
+                 val isExpired : Boolean) : Serializable

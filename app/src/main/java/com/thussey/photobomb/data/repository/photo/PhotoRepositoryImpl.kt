@@ -85,11 +85,11 @@ class PhotoRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserPhotos(userId: UUID, favorite: Boolean): Flow<Result<List<Photo>>> {
-        return withContext(Dispatchers.IO) {
+    override suspend fun getUserPhotos(userId: UUID): Flow<Result<List<Photo>>> {
+      return withContext(Dispatchers.IO) {
             flow {
                 try {
-                    val response = photoApiServices.retrofitInstance.getUserPhotos(userId, favorite)
+                    val response = photoApiServices.retrofitInstance.getUserPhotos(userId)
                     if (response.isSuccessful) {
                         val data = response.body()
                         if (data != null) {

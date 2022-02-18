@@ -14,7 +14,7 @@ interface PhotoRepository {
 
     suspend fun getPhotos(photoSessionId : UUID) : Flow<Result<List<Photo>>>
     suspend fun getPhotoById(photoId : UUID) : Flow<Result<Photo>>
-    suspend fun getUserPhotos(userId : UUID, favorite : Boolean) : Flow<Result<List<Photo>>>
+    suspend fun getUserPhotos(userId : UUID) : Flow<Result<List<Photo>>>
     suspend fun updatePhoto(photo : Photo): Flow<Result<ResponseBody>>
     suspend fun createPhoto(photo : Photo)
 }

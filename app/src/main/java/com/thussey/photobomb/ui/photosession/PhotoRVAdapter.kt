@@ -5,15 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.thussey.photobomb.R
 import com.thussey.photobomb.data.model.photo.Photo
 
-class PhotoRVAdapter(private val photos : List<Photo>, val viewModel : PhotoSessionViewModel)
+class PhotoRVAdapter(private val photos : List<Photo>, val updatePhoto : (photo : Photo) -> Unit)
     : RecyclerView.Adapter<PhotoRVAdapter.ViewHolder>() {
-
     val tag = this::class.java.simpleName
 
     inner class ViewHolder(val view : View) : RecyclerView.ViewHolder(view) {
@@ -23,18 +21,19 @@ class PhotoRVAdapter(private val photos : List<Photo>, val viewModel : PhotoSess
         val photo : ImageView = view.findViewById(R.id.photo)
 
         init {
-            favStar.setOnClickListener {
-                it.isSelected = !it.isSelected
+            favStar.setOnClickListener { starImg ->
                 var selectedPhoto = photos[adapterPosition]
-                selectedPhoto = selectedPhoto.copy(isFavorite = it.isSelected)
-                viewModel.updatePhoto(selectedPhoto)
-                applyStarStyles(it as ImageView, it.isSelected)
+                val isSelected = !starImg.isSelected
+                starImg.isSelected = isSelected
+                selectedPhoto = selectedPhoto.copy(isFavorite = isSelected)
+                updatePhoto(selectedPhoto)
+                applyStarStyles(starImg as ImageView, isSelected)
             }
         }
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item, parent, false)
         return ViewHolder(view)
     }
@@ -43,6 +42,7 @@ class PhotoRVAdapter(private val photos : List<Photo>, val viewModel : PhotoSess
         val photo = photos[position]
         holder.photoName.text = photo.name
         holder.favStar.isSelected = photo.isFavorite
+
         applyStarStyles(holder.favStar, photo.isFavorite)
 
         Picasso.get()
@@ -60,6 +60,5 @@ class PhotoRVAdapter(private val photos : List<Photo>, val viewModel : PhotoSess
         } else {
             imageView.setImageResource(R.drawable.ic_star_outline_black_24dp)
         }
-        imageView.setColorFilter(ContextCompat.getColor(imageView.context, R.color.gold), android.graphics.PorterDuff.Mode.SRC_IN);
     }
 }
