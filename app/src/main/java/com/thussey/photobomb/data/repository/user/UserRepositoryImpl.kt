@@ -4,7 +4,8 @@ import com.thussey.photobomb.data.Result
 import com.thussey.photobomb.data.datasource.PhotoApiServices
 import com.thussey.photobomb.data.model.user.User
 import com.thussey.photobomb.data.retrofit.PhotoBombService
-import kotlinx.coroutines.Dispatchers
+import com.thussey.photobomb.di.DispatcherModule
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import java.io.IOException
@@ -12,11 +13,12 @@ import java.util.*
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val photoApiServices : PhotoBombService<PhotoApiServices>) : UserRepository {
+    private val photoApiServices : PhotoBombService<PhotoApiServices>,
+    @DispatcherModule.IODispatcher private val ioDispatcher : CoroutineDispatcher) : UserRepository {
     private val tag = UserRepositoryImpl::class.java.simpleName
 
     override suspend fun getUserById(userId : UUID): Result<User> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val response = photoApiServices.retrofitInstance.getUserById(userId)
                 if (response.isSuccessful) {
@@ -37,7 +39,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUsers(): Result<List<User>> {
         // Try catch block to handle exceptions when calling the API.
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val response = photoApiServices.retrofitInstance.getUsers()
                 // Check if response was successful.
@@ -58,7 +60,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createUser(user: User): Result<ResponseBody> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val response = photoApiServices.retrofitInstance.createUser(user)
                 // Check if response was successful.

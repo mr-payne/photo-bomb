@@ -5,7 +5,8 @@ import com.thussey.photobomb.data.datasource.PhotoApiServices
 import com.thussey.photobomb.data.model.photo.Photo
 import com.thussey.photobomb.data.model.photosession.PhotoSession
 import com.thussey.photobomb.data.retrofit.PhotoBombService
-import kotlinx.coroutines.Dispatchers
+import com.thussey.photobomb.di.DispatcherModule
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -15,12 +16,13 @@ import java.util.*
 import javax.inject.Inject
 
 class PhotoRepositoryImpl @Inject constructor(
-    private val photoApiServices : PhotoBombService<PhotoApiServices>) : PhotoRepository {
+    private val photoApiServices : PhotoBombService<PhotoApiServices>,
+    @DispatcherModule.IODispatcher private val ioDispatcher : CoroutineDispatcher) : PhotoRepository {
 
     private val tag = PhotoRepositoryImpl::class.java.simpleName
 
     override suspend fun getPhotoSessions(userId : UUID): Flow<Result<List<PhotoSession>>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             flow {
                 try {
                     val response = photoApiServices.retrofitInstance.getPhotoSessions(userId)
@@ -42,7 +44,7 @@ class PhotoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPhotos(photoSessionId : UUID): Flow<Result<List<Photo>>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             flow {
                 try {
                     val response = photoApiServices.retrofitInstance.getPhotos(photoSessionId)
@@ -64,7 +66,7 @@ class PhotoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updatePhoto(photo : Photo) : Flow<Result<ResponseBody>>{
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             flow {
                 try {
                     val response = photoApiServices.retrofitInstance.updatePhoto(photo.id, photo)
@@ -86,7 +88,7 @@ class PhotoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserPhotos(userId: UUID): Flow<Result<List<Photo>>> {
-      return withContext(Dispatchers.IO) {
+      return withContext(ioDispatcher) {
             flow {
                 try {
                     val response = photoApiServices.retrofitInstance.getUserPhotos(userId)
@@ -108,7 +110,7 @@ class PhotoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPhotoById(photoId: UUID): Flow<Result<Photo>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             flow {
                 try {
                     val response = photoApiServices.retrofitInstance.getPhotoById(photoId)
@@ -130,7 +132,7 @@ class PhotoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createPhotoSession(photoSession: PhotoSession) {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val response = photoApiServices.retrofitInstance.createPhotoSession(photoSession)
                 if (response.isSuccessful) {
@@ -150,7 +152,7 @@ class PhotoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createPhoto(photo : Photo) {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val response = photoApiServices.retrofitInstance.createPhoto(photo)
                 if (response.isSuccessful) {

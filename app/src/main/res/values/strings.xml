@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Photo Bomb</string>
+    <string name="app_name_no_spaces">PhotoBomb</string>
     <string name="title_home">Sessions</string>
     <string name="title_photo_sessions">Photos</string>
     <string name="title_dashboard">Favorites</string>

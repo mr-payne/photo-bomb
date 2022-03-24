@@ -13,11 +13,17 @@ import com.thussey.photobomb.R
 class PhotoSessionRVAdapter(private val photoSessions : List<PhotoSessionItem>)
     : RecyclerView.Adapter<PhotoSessionRVAdapter.ViewHolder>() {
 
-    class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         val photoSessionTitle : TextView = view.findViewById(R.id.photoSessionTitle)
         val photoSessionDate : TextView = view.findViewById(R.id.photoSessionDate)
         val sessionThumbnail : ImageView = view.findViewById(R.id.sessionThumbnail)
 
+        init {
+            sessionThumbnail.setOnClickListener {
+                val action = HomeFragmentDirections.actionNavigationHomeToPhotoSessionFragment(photoSessions[adapterPosition].photoSessionId.toString())
+                view.findNavController().navigate(action)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,10 +35,7 @@ class PhotoSessionRVAdapter(private val photoSessions : List<PhotoSessionItem>)
         val photoSession = photoSessions[position]
         holder.photoSessionTitle.text = photoSession.title
         holder.photoSessionDate.text = photoSession.date
-        holder.sessionThumbnail.setOnClickListener {
-            val action = HomeFragmentDirections.actionNavigationHomeToPhotoSessionFragment(photoSession.photoSessionId.toString())
-            holder.itemView.findNavController().navigate(action)
-        }
+
         Picasso.get()
             .load(photoSession.thumbnailUrl)
             .placeholder(R.drawable.ic_placeholder_photo_24)

@@ -7,20 +7,15 @@ import com.thussey.photobomb.data.repository.user.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+sealed class RepositoryModule {
 
     @Binds
-    abstract fun bindPhotoRepositoryImpl(
-        photoRepositoryImpl: PhotoRepositoryImpl
-    ): PhotoRepository
+    abstract fun bindPhotoRepositoryImpl(photoRepositoryImpl: PhotoRepositoryImpl): PhotoRepository
 
     @Binds
-    abstract fun bindUserRepositoryImpl(
-        userRepositoryImpl : UserRepositoryImpl
-    ) : UserRepository
+    abstract fun bindUserRepositoryImpl(userRepositoryImpl : UserRepositoryImpl) : UserRepository
 }

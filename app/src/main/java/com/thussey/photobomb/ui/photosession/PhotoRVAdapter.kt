@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.thussey.photobomb.R
@@ -28,6 +29,11 @@ class PhotoRVAdapter(private val photos : List<Photo>, val updatePhoto : (photo 
                 selectedPhoto = selectedPhoto.copy(isFavorite = isSelected)
                 updatePhoto(selectedPhoto)
                 applyStarStyles(starImg as ImageView, isSelected)
+            }
+
+            photo.setOnClickListener {
+                val action = PhotoSessionFragmentDirections.actionPhotoSessionFragmentToFullscreenImgFragment(photos[adapterPosition].url)
+                view.findNavController().navigate(action)
             }
         }
 

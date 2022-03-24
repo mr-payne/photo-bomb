@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.thussey.photobomb.R
@@ -20,7 +21,10 @@ class DashboardAdapter(private val photos : List<Photo>) :
         val shopBtn : ImageView = view.findViewById(R.id.shop)
         val commentBtn : ImageView = view.findViewById(R.id.comment)
         init {
-            //set listeners
+            photo.setOnClickListener {
+                val action = DashboardFragmentDirections.actionNavigationDashboardToFullscreenImg(photos[adapterPosition].url)
+                view.findNavController().navigate(action)
+            }
         }
     }
 
@@ -29,6 +33,7 @@ class DashboardAdapter(private val photos : List<Photo>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = photos[position]
         holder.photoName.text = photo.name
+
         Picasso.get()
             .load(photo.url)
             .placeholder(R.drawable.ic_placeholder_photo_24)
